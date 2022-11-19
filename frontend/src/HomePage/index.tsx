@@ -1,9 +1,17 @@
 import React from "react";
 import landingImage from "../Images/hArsil_square.png";
-import Logo from "../Images/autism.png";
-function Home() {
+import wrench from "../Images/wrench.png";
+import MemoryOutlinedIcon from '@mui/icons-material/MemoryOutlined';
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+
+interface IHome {
+  isLoggedIn: boolean;
+  setIsLoggedIn: any;
+}
+
+const Home:React.FC<IHome> = ({isLoggedIn, setIsLoggedIn}) => {
   return (
-    <>
+    <div className="overflow-y-none">
       <div className="grid place-items-center w-full h-screen text-center">
         <div className="flex place-items-center">
           <div className="pr-32">
@@ -31,40 +39,52 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className="text-4xl px-8 py-4 font-bold">Why use Assemb.ly</div>
-      <div className="w-full mx-56 text-center align-center flex">
-        <div className="absolute h-[50vh] bg-slate-300 -skew-y-12"> </div>
-          <div className="align-center flex">
-            <div className="h-full mx-3 my-6 rounded-lg border border-lavender w-1/5 py-3">
-              <img src={Logo} className="object-scale-down" />
-              <div>Precision</div>
-              <div>
-                With Assemb.ly our model accurately determines wheteher there
-                are missing features
-              </div>
+      <div className="text-4xl px-8 pt-8 mt-14 font-bold">
+        Why use Assemb.ly
+      </div>
+      <div className="w-full text-center align-center overflow-y-none">
+        <div className="absolute w-full h-[90vh] bg-slate-300 z-0 mb-6 -skew-y-3 mt-14" />
+        <div className="align-center mx-64 py-40 w-full relative flex">
+          <div className="h-full mx-4 my-6 rounded-lg w-1/5 py-3">
+            <MemoryOutlinedIcon sx={{ fontSize: 100 }} className="text-purple"/>
+            <div className="text-3xl pb-4 font-bold">Precision</div>
+            <div className="text-l font-semibold">
+              With Assemb.ly our model accurately determines wheteher there are
+              missing components of each circuit board and flags each inaccuracy for the user
+              to view in the built in dashboard
             </div>
+          </div>
 
-            <div className="h-full mx-3 my-6 rounded-lg border border-lavender w-1/5 py-3">
-              <img src={Logo} className="object-scale-down" />
-              <div>Proactive</div>
-              <div>
-                Catch errors in your assembly line before its too late. Our
-                software allows clients to catch potential faults in their
-                production line before it impacts the outcome of products being
-                shipped out to consumers
-              </div>
+          <div className="h-full  mx-4 my-6 rounded-lg w-1/5 py-3">
+            <MemoryOutlinedIcon sx={{ fontSize: 100 }} className="text-purple"/>
+            <div className="text-3xl pb-4 font-bold">Ease of Use</div>
+            <div className="text-l font-semibold">
+              With our intuitive UI, you can easily detect which parts of the assembly line needs readjustment and 
+              determine key statistics. 
+              In the end limiting the number of faulty products being produced not only reducing costs and saving 
+              client relations. 
             </div>
+          </div>
 
-            <div className="h-full mx-3 my-6 flex flex-col rounded-lg border border-lavender w-1/5 py-3">
-              <img src={Logo} className="object-scale-down" />
-              <div>All in one</div>
-              <div>
-                Assemb.ly provides an all in one soluttion for users to not only
-              </div>
+          <div className="h-full  mx-4 my-6 rounded-lg w-1/5 py-3">
+            <DashboardOutlinedIcon sx={{ fontSize: 100 }} className="text-purple"/>
+            <div className="text-3xl pb-4 font-bold">Dashboard</div>
+            <div className="text-l font-semibold">
+              Assemb.ly has a built in analytical dashboard that allows the user to select and view
+              graphs that show the number of times circuit boards are missing components on each given day, 
+              and which components are missing the most over a selected time period. 
             </div>
           </div>
         </div>
-    </>
+      </div>
+
+      <div className="grid place-items-center">
+        <div>Built using familiar technologies</div>
+        <div className="flex">
+
+        </div>
+      </div>
+    </div>
   );
 }
 

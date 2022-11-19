@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 
 interface ILoginPage {
   isLoggedIn: boolean;
+  setIsLoggedIn: any;
 }
 
-const LoginPage: React.FC<ILoginPage> = ({ isLoggedIn }) => {
+const LoginPage: React.FC<ILoginPage> = ({ isLoggedIn, setIsLoggedIn }) => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
 

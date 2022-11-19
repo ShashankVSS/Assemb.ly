@@ -3,9 +3,10 @@ import TextField from "@mui/material/TextField";
 
 interface IRegisterPage {
   isLoggedIn: boolean;
+  setIsLoggedIn: any;
 }
 
-const RegisterPage: React.FC<IRegisterPage> = ({ isLoggedIn }) => {
+const RegisterPage: React.FC<IRegisterPage> = ({ isLoggedIn, setIsLoggedIn }) => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
 

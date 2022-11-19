@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 function NavBar() {
   return (
-    <div className="w-full flex flex-initial p-4">
+    <div className="w-full bg-white flex flex-initial p-4 sticky top-0">
       <div className="font-bold px-4 py-1 text-lg">Hello world</div>
       <div className="flex-1" />
       <div className="flex">

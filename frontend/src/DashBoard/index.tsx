@@ -1,8 +1,10 @@
 import React from "react";
 
-interface IDashboard {}
-
-const DashBoard: React.FC<IDashboard> = () => {
+interface IDashboard {
+  isLoggedIn: boolean;
+  setIsLoggedIn: any;
+}
+const DashBoard: React.FC<IDashboard> = ({isLoggedIn, setIsLoggedIn}) => {
   return (
     <div className="h-[90vh] flex-col">
       <div className="h-[90%] mt-10">
