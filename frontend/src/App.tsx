@@ -1,25 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-function App() {
+import NavBar from './NavBar';
+import Home from './HomePage';
+import DashBoard from './DashBoard';
+import LoginPage from './LoginPage';
+import RegisterPage from './RegisterPage';
+
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className='App w-full h-full flex flex-col m-0 p-0'>
+        <NavBar />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/Dashboard' element={<DashBoard />} />
+          <Route path='/Login' element={<LoginPage isLoggedIn={false}/>} />
+          <Route path='/Register' element={<RegisterPage isLoggedIn={false}/>} />
+          <Route path="*" element={<div>404 ERROR LMFAO GET FUCKED</div>} />
+        </Routes>
+      </div>
   );
 }
 
