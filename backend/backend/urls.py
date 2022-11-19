@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.http import HttpResponse
-from dynamodb_json import json_util as dynamodb_json
 from pymongo import MongoClient
 
 client = MongoClient("mongodb+srv://Harshil:Patel@cluster0.bi28rrw.mongodb.net/?retryWrites=true&w=majority")
@@ -24,11 +23,17 @@ dbname = client['scans']
 collection = dbname['id']
 
 def scan(request):
-    # collection.insert_one({'penis': 'penis'})
+    pass
 
-    return HttpResponse(collection.find({}))
+def get_good(request):
+    return HttpResponse(collection.find({'Pass': True}))
+
+def get_bad(request):
+    return HttpResponse(collection.find({'Pass': False}))
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('scan/', scan),
+    path('get_good/', get_good),
+    path('get_bad/', get_bad),
 ]
