@@ -27,10 +27,10 @@ interface IDashboard {
 }
 
 interface IHTTPResponse {
-  missing: string[];
-  pass: boolean;
-  dat: { t: number; i: number };
-  img: string;
+  Missing: string;
+  Pass: boolean;
+  Date: number;
+  Img: string;
 }
 
 interface ILineData {
@@ -46,36 +46,47 @@ const DashBoard: React.FC<IDashboard> = ({ isLoggedIn, setIsLoggedIn }) => {
   const [date, setDate] = useState<Dayjs>(dayjs().set('hour', 0).set('minute', 0).set('second', 0));
 
   useEffect(() => {
-    fetch("http://localhost:8000/GetGood")
+    fetch("http://localhost:8000/get_good/")
     .then((response) => response.json())
     .then((data) => setGoodData(data))
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8000/GetBad")
-    .then((response) => response.json())
-    .then((data) => setBadData(data))
+    fetch("http://localhost:8000/get_bad/")
+    .then((response) => {
+      console.log("BAD RESPONSE", response.json().then((data) => setBadData(data)))})
+    .catch(err => {
+      console.log(err);
+    })
   }, []);
+
+  console.log(Math.floor(badData[0]?.Date));
+
+  var parsedBadData = []
+  for (let i = 0; i < badData.length; ++i) {
+    var splitArr = badData[i].Missing.split(',')
+    parsedBadData.push({Missing: splitArr, Date: Math.floor(badData[i].Date), Img: badData[i].Img, Pass: badData[i].Pass});
+  }
 
   let unixDate;
 
-  unixDate = date.valueOf();
-  console.log(date);
-  console.log(unixDate);
+  unixDate = Math.floor(date.valueOf() / 1000);
 
   const filteredGood = [];
 
   for(let i = 0; i < goodData.length; ++i) {
-    if (goodData[i].dat.i >= unixDate && goodData[i].dat.i < unixDate + (86399 * 1000)) {
+    if (goodData[i].Date >= unixDate && goodData[i].Date < unixDate + (86399 * 1000)) {
       filteredGood.push(goodData[i]);
     }
   }
 
   const filteredBad = []
 
-  for(let i = 0; i < badData.length; ++i) {
-    if (badData[i].dat.i >= unixDate && badData[i].dat.i < unixDate + (86399 * 1000)) {
-      filteredBad.push(badData[i]);
+  for(let i = 0; i < parsedBadData.length; ++i) {
+    console.log("DATE IN ITHE THING", parsedBadData[i].Date);
+    console.log("UNIX DATE", unixDate)
+    if (parsedBadData[i].Date >= unixDate && parsedBadData[i].Date < unixDate + (86399 * 1000)) {
+      filteredBad.push(parsedBadData[i]);
     }
   }
 
@@ -86,9 +97,9 @@ const DashBoard: React.FC<IDashboard> = ({ isLoggedIn, setIsLoggedIn }) => {
     let fails = 0;
     for (let j = 0; j < badData.length; ++j) {
       if (
-        badData[j]?.dat?.i >= unixDate &&
-        badData[j]?.dat?.i < unixDate + 3600 &&
-        badData[j].pass == false
+        badData[j]?.Date >= unixDate &&
+        badData[j]?.Date < unixDate + 3600 &&
+        badData[j].Pass == false
       ) {
         fails++;
       }
@@ -110,13 +121,11 @@ const DashBoard: React.FC<IDashboard> = ({ isLoggedIn, setIsLoggedIn }) => {
 
   lineData.sort(compare);
 
-  console.log(lineData);
-
   ///////////GETTING DATA FOR PIE GRAPH////////f/////////
   var allMissing: string[] = [];
-  for (let i = 0; i < badData.length; ++i) {
-    for (let j = 0; j < badData[i].missing.length; ++j) {
-      allMissing.push(badData[i].missing[j]);
+  for (let i = 0; i < filteredBad.length; ++i) {
+    for (let j = 0; j < filteredBad[i].Missing.length; ++j) {
+      allMissing.push(filteredBad[i].Missing[j]);
     }
   }
 
@@ -206,7 +215,12 @@ const DashBoard: React.FC<IDashboard> = ({ isLoggedIn, setIsLoggedIn }) => {
         </div>
         <div className="grid h-1/2 grid-cols-2 mx-8 my-4 gap-4">
           <div className="col-span-1 border border-grey-300">
-            
+            <div>
+              {parsedBadData.map(key => {
+                // @ts-ignore
+                <ResultPics link={parsedBadData[key].Img} name={"Failed Board" + key} />}
+              )}
+            </div>
           </div>
           <div className="col-span-1 border border-grey-300">asdasdasd</div>
         </div>
