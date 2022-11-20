@@ -38,34 +38,50 @@ interface ILineData {
   fail: number;
 }
 
-const tempdata: IHTTPResponse[] = []
+const tempdata: IHTTPResponse[] = [];
 
 const DashBoard: React.FC<IDashboard> = ({ isLoggedIn, setIsLoggedIn }) => {
   const [goodData, setGoodData] = useState<IHTTPResponse[]>([]);
   const [badData, setBadData] = useState<IHTTPResponse[]>([]);
-  const [date, setDate] = useState<Dayjs>(dayjs().set('hour', 0).set('minute', 0).set('second', 0));
+  const [date, setDate] = useState<Dayjs>(
+    dayjs().set("hour", 0).set("minute", 0).set("second", 0)
+  );
 
   useEffect(() => {
     fetch("http://localhost:8000/get_good/")
-    .then((response) => response.json())
-    .then((data) => setGoodData(data))
+      .then((response) => response.json())
+      .then((data) => setGoodData(data));
   }, []);
 
   useEffect(() => {
     fetch("http://localhost:8000/get_bad/")
-    .then((response) => {
-      console.log("BAD RESPONSE", response.json().then((data) => setBadData(data)))})
-    .catch(err => {
-      console.log(err);
-    })
+      .then((response) => {
+        console.log(
+          "BAD RESPONSE",
+          response.json().then((data) => setBadData(data))
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   console.log(Math.floor(badData[0]?.Date));
 
-  var parsedBadData = []
+  var parsedBadData: {
+    Missing: string[];
+    Pass: boolean;
+    Date: number;
+    Img: string;
+  }[] = [];
   for (let i = 0; i < badData.length; ++i) {
-    var splitArr = badData[i].Missing.split(',')
-    parsedBadData.push({Missing: splitArr, Date: Math.floor(badData[i].Date), Img: badData[i].Img, Pass: badData[i].Pass});
+    var splitArr = badData[i].Missing.split(",");
+    parsedBadData.push({
+      Missing: splitArr,
+      Date: Math.floor(badData[i].Date),
+      Img: badData[i].Img,
+      Pass: badData[i].Pass,
+    });
   }
 
   let unixDate;
@@ -74,22 +90,30 @@ const DashBoard: React.FC<IDashboard> = ({ isLoggedIn, setIsLoggedIn }) => {
 
   const filteredGood = [];
 
-  for(let i = 0; i < goodData.length; ++i) {
-    if (goodData[i].Date >= unixDate && goodData[i].Date < unixDate + (86399 * 1000)) {
+  for (let i = 0; i < goodData.length; ++i) {
+    if (
+      goodData[i].Date >= unixDate &&
+      goodData[i].Date < unixDate + 86399 * 1000
+    ) {
       filteredGood.push(goodData[i]);
     }
   }
 
-  const filteredBad = []
+  const filteredBad: {
+    Missing: string[];
+    Pass: boolean;
+    Date: number;
+    Img: string;
+  }[] = [];
 
-  for(let i = 0; i < parsedBadData.length; ++i) {
-    console.log("DATE IN ITHE THING", parsedBadData[i].Date);
-    console.log("UNIX DATE", unixDate)
-    if (parsedBadData[i].Date >= unixDate && parsedBadData[i].Date < unixDate + (86399 * 1000)) {
+  for (let i = 0; i < parsedBadData.length; ++i) {
+    if (
+      parsedBadData[i].Date >= unixDate &&
+      parsedBadData[i].Date < unixDate + 86399 * 1000
+    ) {
       filteredBad.push(parsedBadData[i]);
     }
   }
-
 
   let lineData: ILineData[] = [];
 
@@ -158,7 +182,9 @@ const DashBoard: React.FC<IDashboard> = ({ isLoggedIn, setIsLoggedIn }) => {
               value={date}
               onChange={(newValue) => {
                 if (newValue) {
-                  setDate(newValue.set('hour', 0).set('minute', 0).set('second', 0));
+                  setDate(
+                    newValue.set("hour", 0).set("minute", 0).set("second", 0)
+                  );
                 }
               }}
               renderInput={(params) => <TextField {...params} />}
@@ -216,13 +242,24 @@ const DashBoard: React.FC<IDashboard> = ({ isLoggedIn, setIsLoggedIn }) => {
         <div className="grid h-1/2 grid-cols-2 mx-8 my-4 gap-4">
           <div className="col-span-1 border border-grey-300">
             <div>
-              {parsedBadData.map(key => {
-                // @ts-ignore
-                <ResultPics link={parsedBadData[key].Img} name={"Failed Board" + key} />}
-              )}
+              {filteredGood.map((elem, key) => {
+                return (
+                  <a href={elem.Img} className="flex">
+                    <div>{"Passed Board" + key} </div>
+                  </a>
+                );
+              })}
             </div>
           </div>
-          <div className="col-span-1 border border-grey-300">asdasdasd</div>
+          <div className="col-span-1 border border-grey-300">
+            {filteredBad.map((elem, key) => {
+              return (
+                <a href={elem.Img} className="flex">
+                  <div>{"Passed Board" + key} </div>
+                </a>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
@@ -234,13 +271,12 @@ interface IPics {
   name: string;
 }
 
-const ResultPics: React.FC<IPics> = ({link, name}) => {
+const ResultPics: React.FC<IPics> = ({ link, name }) => {
   return (
     <div className="flex">
       <a href={link}>{name}</a>
     </div>
-  )
-}
-
+  );
+};
 
 export default DashBoard;
