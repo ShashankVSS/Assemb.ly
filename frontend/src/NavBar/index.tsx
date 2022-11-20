@@ -16,10 +16,10 @@ const NavBar: React.FC<INavBar> = ({isLoggedIn, setIsLoggedIn}) => {
         <div className="px-4 py-1 flex text-lg">
           <Link to="/">About</Link>
         </div>
-        <div className="px-4 py-1 text-lg">
+        <div className="px-4 py-1 mr-2 text-lg">
           {isLoggedIn ? <Link to="/Dashboard">Dashboard</Link> :  <Link to="/Login">Dashboard</Link>}
         </div>
-        <div className="px-6 py-1 text-lg bg-lavender rounded-full border border-purple">
+        <div className="px-6 py-1 text-lg bg-gradient-to-r from-lavender to-purple rounded-full border border-purple">
           <Link to="/Login">Login</Link>
         </div>
       </div>
