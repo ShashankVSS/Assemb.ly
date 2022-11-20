@@ -1,0 +1,13 @@
+train: ../hackwestern/train/images
+val: ../hackwestern/valid/images
+test: ../hackwestern/test/images
+
+nc: 7
+names: ['Blue Button', 'Capacitor', 'LED', 'Pressure Sensor', 'Red Button', 'Resistor', 'Transistor']
+
+roboflow:
+  workspace: spudzy-y0jgr
+  project: electrical-components
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/spudzy-y0jgr/electrical-components/dataset/1

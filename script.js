@@ -2,7 +2,7 @@ var video = document.querySelector("#videoElement");
 var clock = false;
 var timer = document.getElementById('timer');
 var picture;
-var trigger = 400;
+var trigger = 4000;
 
 if (navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({
@@ -45,8 +45,9 @@ setInterval(() => {
                 function runPyScript(){
                   var jqXHR = $.ajax({
                       type: "POST",
-                      url: "/upload/",
+                      url: "localhost:8000/scan",
                       async: false,
+                      headers: {'Access-Control-Allow-Origin': '*'},
                       data: { file: im.toDataURL("image/png", 0).split(",")[1]}
                   });
 
@@ -64,13 +65,13 @@ setInterval(() => {
                 document.getElementById("outBox").style.color = "black";
                 document.getElementById("outBox").style.border = "2px dashed black";
             }
-              trigger = 400;
+              trigger = 4000;
         }
         
         timer.innerHTML = trigger / 1000;
     } 
     else {
-        trigger = 400;
+        trigger = 4000;
         timer.innerHTML = trigger / 1000;
     }
 
