@@ -43,8 +43,8 @@ const Home:React.FC<IHome> = ({isLoggedIn, setIsLoggedIn}) => {
         Why use Assemb.ly
       </div>
       <div className="w-full text-center align-center overflow-y-none">
-        <div className="absolute w-full h-[70vh] bg-slate-300 z-0 mb-6 -skew-y-3 mt-14" />
-        <div className="align-center mx-64 py-40 w-full relative flex">
+        <div className="absolute w-full h-[70vh] bg-slate-300 z-0 mb-6 -skew-y-3" />
+        <div className="align-center mx-64 py-24 w-full relative flex">
           <div className="h-full mx-4 my-6 rounded-lg w-1/5 py-3">
             <MemoryOutlinedIcon sx={{ fontSize: 100 }} className="text-purple"/>
             <div className="text-3xl pb-4 font-bold">Precision</div>

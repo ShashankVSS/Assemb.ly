@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface ILoginPage {
   isLoggedIn: boolean;
-  setIsLoggedIn: any;
+  setIsLoggedIn: (value: boolean) => void;
 }
 
 const LoginPage: React.FC<ILoginPage> = ({ isLoggedIn, setIsLoggedIn }) => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
+  const navigate = useNavigate();
   return (
     <div className="text-center my-[20vh] content-center">
       <div className="my-6 font-bold text-xl">Login</div>
@@ -36,7 +37,8 @@ const LoginPage: React.FC<ILoginPage> = ({ isLoggedIn, setIsLoggedIn }) => {
         <Link to="/Register">Sign up</Link>
       </div>
       <div className="">
-        <button className="my-6 px-6 py-2 border rounded-lg bg-lavender">Login</button>
+        <button className="my-6 px-6 py-2 border rounded-lg bg-lavender" 
+        onClick={(e) => {setIsLoggedIn(true); console.log("hello"); navigate('/Dashboard')}}>Login</button>
       </div>
     </div>
   );

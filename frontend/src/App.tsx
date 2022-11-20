@@ -12,12 +12,12 @@ const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
       <div className='App w-full h-full flex flex-col m-0 p-0 overflow-x-hidden'>
-        <NavBar />
+        <NavBar isLoggedIn={isLoggedIn} setIsLoggedIn={isLoggedIn}/>
         <Routes>
-          <Route path='/' element={<Home isLoggedIn={isLoggedIn} setIsLoggedIn={isLoggedIn}/>} />
-          <Route path='/Dashboard' element={<DashBoard isLoggedIn={isLoggedIn} setIsLoggedIn={isLoggedIn}/>} />
-          <Route path='/Login' element={<LoginPage isLoggedIn={isLoggedIn} setIsLoggedIn={isLoggedIn}/>} />
-          <Route path='/Register' element={<RegisterPage isLoggedIn={isLoggedIn} setIsLoggedIn={isLoggedIn}/>} />
+          <Route path='/' element={<Home isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />
+          <Route path='/Dashboard' element={<DashBoard isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />
+          <Route path='/Login' element={<LoginPage isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />
+          <Route path='/Register' element={<RegisterPage isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />
           <Route path="*" element={<div>404 ERROR</div>} />
         </Routes>
       </div>
