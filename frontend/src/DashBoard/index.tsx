@@ -56,17 +56,12 @@ const DashBoard: React.FC<IDashboard> = ({ isLoggedIn, setIsLoggedIn }) => {
   useEffect(() => {
     fetch("http://localhost:8000/get_bad/")
       .then((response) => {
-        console.log(
-          "BAD RESPONSE",
-          response.json().then((data) => setBadData(data))
-        );
+          response.json().then((data) => setBadData(data));
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-
-  console.log(Math.floor(badData[0]?.Date));
 
   var parsedBadData: {
     Missing: string[];
@@ -84,18 +79,34 @@ const DashBoard: React.FC<IDashboard> = ({ isLoggedIn, setIsLoggedIn }) => {
     });
   }
 
+  var parsedGoodData: {
+    Missing: string[];
+    Pass: boolean;
+    Date: number;
+    Img: string;
+  }[] = [];
+  for (let i = 0; i < goodData.length; ++i) {
+    var splitArr = goodData[i].Missing.split(",");
+    parsedGoodData.push({
+      Missing: splitArr,
+      Date: Math.floor(goodData[i].Date),
+      Img: goodData[i].Img,
+      Pass: goodData[i].Pass,
+    });
+  }
+
   let unixDate;
 
   unixDate = Math.floor(date.valueOf() / 1000);
 
   const filteredGood = [];
 
-  for (let i = 0; i < goodData.length; ++i) {
+  for (let i = 0; i < parsedGoodData.length; ++i) {
     if (
-      goodData[i].Date >= unixDate &&
-      goodData[i].Date < unixDate + 86399 * 1000
+      parsedGoodData[i].Date >= unixDate &&
+      parsedGoodData[i].Date < unixDate + 86399
     ) {
-      filteredGood.push(goodData[i]);
+      filteredGood.push(parsedGoodData[i]);
     }
   }
 
@@ -109,7 +120,7 @@ const DashBoard: React.FC<IDashboard> = ({ isLoggedIn, setIsLoggedIn }) => {
   for (let i = 0; i < parsedBadData.length; ++i) {
     if (
       parsedBadData[i].Date >= unixDate &&
-      parsedBadData[i].Date < unixDate + 86399 * 1000
+      parsedBadData[i].Date < unixDate + 86399
     ) {
       filteredBad.push(parsedBadData[i]);
     }
@@ -147,6 +158,7 @@ const DashBoard: React.FC<IDashboard> = ({ isLoggedIn, setIsLoggedIn }) => {
 
   ///////////GETTING DATA FOR PIE GRAPH////////f/////////
   var allMissing: string[] = [];
+  console.log(filteredBad)
   for (let i = 0; i < filteredBad.length; ++i) {
     for (let j = 0; j < filteredBad[i].Missing.length; ++j) {
       allMissing.push(filteredBad[i].Missing[j]);
@@ -191,14 +203,14 @@ const DashBoard: React.FC<IDashboard> = ({ isLoggedIn, setIsLoggedIn }) => {
             />
           </LocalizationProvider>
         </div>
-        <div className="grid h-1/2 grid-cols-3 gap-4 my-4 mx-8">
+        <div className="grid h-1/2 grid-cols-3 gap-4 my-8 mx-8">
           <div className="col-span-2 border border-grey-300">
             <div className="font-bold text-lg p-2">
               Number of fails per hour
             </div>
             <LineChart
-              width={800}
-              height={250}
+              width={1200}
+              height={300}
               data={lineData}
               margin={{
                 top: 5,
@@ -224,14 +236,14 @@ const DashBoard: React.FC<IDashboard> = ({ isLoggedIn, setIsLoggedIn }) => {
             <div className="font-bold text-lg p-2">
               Number of each component missing
             </div>
-            <div className="px-28 py-4">
-              <PieChart width={200} height={200}>
+            <div className="px-48 py-4">
+              <PieChart width={230} height={230}>
                 <Pie
                   dataKey="value"
                   data={pieData}
                   cx="50%"
                   cy="50%"
-                  outerRadius={80}
+                  outerRadius={100}
                   fill="#8884d8"
                 />
                 <Tooltip />
@@ -240,41 +252,30 @@ const DashBoard: React.FC<IDashboard> = ({ isLoggedIn, setIsLoggedIn }) => {
           </div>
         </div>
         <div className="grid h-1/2 grid-cols-2 mx-8 my-4 gap-4">
-          <div className="col-span-1 border border-grey-300">
+        <div className="max-h-[40vh] overflow-y-auto col-span-1 border border-grey-300">
+            <div className="text-lg font-bold p-2">Boards with all components</div>
             <div>
               {filteredGood.map((elem, key) => {
                 return (
-                  <a href={elem.Img} className="flex">
-                    <div>{"Passed Board" + key} </div>
+                  <a href={elem.Img} className="flex p-2 border border-top-black">
+                  <div>{"Passed Board " + key} </div>
                   </a>
                 );
               })}
             </div>
           </div>
-          <div className="col-span-1 border border-grey-300">
+          <div className="max-h-[40vh] overflow-y-auto col-span-1 border border-grey-300">
+            <div className="text-lg font-bold p-2">Boards with missing components</div>
             {filteredBad.map((elem, key) => {
               return (
-                <a href={elem.Img} className="flex">
-                  <div>{"Passed Board" + key} </div>
+                <a href={elem.Img} className="flex p-2 border border-top-black">
+                  <div>{"Failed Board " + key} </div>
                 </a>
               );
             })}
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-interface IPics {
-  link: string;
-  name: string;
-}
-
-const ResultPics: React.FC<IPics> = ({ link, name }) => {
-  return (
-    <div className="flex">
-      <a href={link}>{name}</a>
     </div>
   );
 };

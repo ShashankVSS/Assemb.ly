@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import logo from "../Images/wrench.png";
 
 interface INavBar {
   isLoggedIn: boolean;
@@ -9,10 +10,10 @@ interface INavBar {
 const NavBar: React.FC<INavBar> = ({isLoggedIn, setIsLoggedIn}) => {
   return (
     <div className="w-full bg-white flex flex-initial p-4 sticky top-0">
-      <div className="font-bold px-4 py-1 text-lg">Hello world</div>
+      <div className="font-bold px-4 py-1 text-lg"><Link to="/">Assemb.ly</Link></div>
       <div className="flex-1" />
       <div className="flex">
-        <div className="px-4 py-1 text-lg">
+        <div className="px-4 py-1 flex text-lg">
           <Link to="/">About</Link>
         </div>
         <div className="px-4 py-1 text-lg">

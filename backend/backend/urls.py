@@ -25,6 +25,9 @@ import detect_2
 import requests
 import base64, cv2
 import json
+from bson.json_util import dumps
+import numpy as np
+
 
 client = MongoClient("mongodb+srv://Harshil:Patel@cluster0.bi28rrw.mongodb.net/?retryWrites=true&w=majority")
 dbname = client['scans']
@@ -33,15 +36,17 @@ collection = dbname['id']
 defaultdict = {'Blue Button': 1, 'LED': 1, 'Capacitor': 2, 'Pressure Sensor': 1, 'Red Button': 1, 'Resistor': 3, 'Transistor': 2}
 
 def get_good(request):
-    return HttpResponse(collection.find({'Pass': True}))
+    return HttpResponse(dumps(list(collection.find({'Pass': True}))))
 
 def get_bad(request):
-    return HttpResponse(collection.find({'Pass': False}))
+    return HttpResponse(dumps(list(collection.find({'Pass': False}))))
 
 def scan(request):
     dataurl = request.POST.get('file')
-    bytes = base64.b64decode(dataurl)
-    cv2.imwrite('testimg.jpg')
+    img_bytes = base64.b64decode(dataurl)
+    img = np.asarray(bytearray(img_bytes), dtype="uint8")
+    img = cv2.imdecode(img, cv2.IMREAD_COLOR)
+    cv2.imwrite('testimg.jpg', img)
 
     missing, img = detect_2.detect()
     join = ','.join(missing)
