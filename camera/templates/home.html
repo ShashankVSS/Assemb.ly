@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="">
 <head>
-
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assembly</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -24,8 +25,8 @@
         <div class="col-md-6 ">
             <div class="title">
             <div class="pictures">
-                  <canvas id="image" class="canvas" width="1280" height="720" style="display: none;"></canvas>
-                 <canvas id="vidisplay" class="sadge" width="1280" height="720" style="display: none;"></canvas>
+                  <canvas id="image" class="canvas" width="1280" height="960" style="display: none;"></canvas>
+                 <canvas id="vidisplay" class="sadge" width="1280" height="960" style="display: none;"></canvas>
                  <video id="videoElement" autoplay="true" width="854" height="480" onloadstart="oink()"></video>
             </div>
         </div>
@@ -43,7 +44,7 @@
     </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="{% static 'script.js' %}"></script>
 </div>
 
 
